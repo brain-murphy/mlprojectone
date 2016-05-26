@@ -13,14 +13,4 @@ public class TestPropaneData {
     public void setUp() {
 //        parser = new PropaneData();
     }
-
-    @Test
-    public void testRemoveFileExtensionFromName() {
-        String fileNameWithExtension = "36.6.txt";
-        String fileNameWithoutExtension = "36.6";
-
-        String result = parser.removeFileExtension(fileNameWithExtension);
-
-        assert(result.equals(fileNameWithoutExtension));
-    }
 }
