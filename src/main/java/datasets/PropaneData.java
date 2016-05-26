@@ -14,31 +14,28 @@ public class PropaneData {
     private Map<Float,List<Map<Integer,Integer>>> data;
     private float[] weights;
 
-    public static PropaneData readPropaneDataFromResources() {
-        PropaneData propaneData = new PropaneData(deserializePropaneData());
+    public PropaneData() {
+        data = deserializePropaneData();
 
-        return propaneData;
+        weights = ProjectUtils.toPrimitiveFloatArray(data.keySet());
     }
 
-    private static Map<Float,List<Map<Integer,Integer>>> deserializePropaneData() {
+    private Map<Float,List<Map<Integer,Integer>>> deserializePropaneData() {
         Map<Float,List<Map<Integer,Integer>>> data = null;
         try {
-            FileInputStream fileIn = new FileInputStream(PROPANE_DATA_FILE_PATH);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource(PROPANE_DATA_FILE_PATH).getFile());
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileInputStream);
             data = (Map<Float,List<Map<Integer,Integer>>>) in.readObject();
             in.close();
-            fileIn.close();
+            fileInputStream.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
         return data;
-    }
-
-    private PropaneData(Map<Float,List<Map<Integer,Integer>>> pData) {
-        data = pData;
-
-        weights = ProjectUtils.toPrimitiveFloatArray(data.keySet());
     }
 
     public List<Map<Integer,Integer>> getFftsForTankWeight(float weight) {
