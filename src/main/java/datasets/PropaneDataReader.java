@@ -7,14 +7,14 @@ import java.io.*;
 import java.util.*;
 
 
-public class PropaneData {
+public class PropaneDataReader {
 
     private static final String PROPANE_DATA_FILE_PATH = "datasets/propaneData.ser";
 
     private Map<Float,List<Map<Integer,Integer>>> data;
     private float[] weights;
 
-    public PropaneData() {
+    public PropaneDataReader() {
         data = deserializePropaneData();
 
         weights = ProjectUtils.toPrimitiveFloatArray(data.keySet());
@@ -38,11 +38,40 @@ public class PropaneData {
         return data;
     }
 
-    public List<Map<Integer,Integer>> getFftsForTankWeight(float weight) {
-        return data.get(weight);
+    public DataSet<PropaneInstance> getPropaneDataset() {
+        PropaneInstance[] instances = new PropaneInstance[getFftCount()];
+
+        int instanceIndex = 0;
+
+        for (float weight : weights) {
+            for (Map<Integer,Integer> fft : data.get(weight)) {
+                instances[instanceIndex] = new PropaneInstance(mapToDoubleArray(fft), weight);
+                instanceIndex += 1;
+            }
+        }
+
+        return new DataSet<>(instances);
     }
 
-    public float[] getWeights() {
-        return weights;
+    private static double[] mapToDoubleArray(Map<Integer, Integer> map) {
+        double[] array = new double[map.size()];
+
+        int index = 0;
+
+        for (int frequency : map.keySet()) {
+            array[index] = map.get(frequency);
+            index += 1;
+        }
+
+        return array;
+    }
+
+    private int getFftCount() {
+        int total = 0;
+        for (float weight : weights) {
+            total += data.get(weight).size();
+        }
+
+        return total;
     }
 }

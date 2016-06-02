@@ -9,48 +9,18 @@ import static org.junit.Assert.*;
 /**
  * Created by brian on 5/26/16.
  */
-public class TestPropaneData {
+public class TestPropaneDataReader {
 
-    PropaneData propaneData;
+    PropaneDataReader propaneDataReader;
 
     @Before
     public void setUp() {
-        propaneData = new PropaneData();
+        propaneDataReader = new PropaneDataReader();
     }
 
     @Test
-    public void validateWeights() {
-        for (float f : propaneData.getWeights()) {
-            if (f < 10 || f > 50) {
-                Assert.fail("weight not in expected range: " + f);
-            }
-        }
-    }
-
-    @Test
-    public void validateFfts() {
-
-        for (float weight : propaneData.getWeights()) {
-            List<Map<Integer, Integer>> fftList = propaneData.getFftsForTankWeight(weight);
-
-            assertNotNull("fft list is null", fftList);
-
-            for (Map<Integer, Integer> fft : fftList) {
-                assertNotNull("an fft is null", fft);
-
-                int[] allFrequencies = getAllFrequencies();
-
-                for (int frequency : allFrequencies) {
-                    assertTrue("fft does not contain frequency " + frequency + " on weight " + weight, fft.containsKey(frequency));
-
-                    Integer magnitude = fft.get(frequency);
-
-                    if (magnitude == null || magnitude < 0) {
-                        fail("magnitude is not in expected range for frequency " + frequency + " on weight " + weight);
-                    }
-                }
-            }
-        }
+    public void testIterator() {
+        //TODO
     }
 
     private int[] getAllFrequencies() {
