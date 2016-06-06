@@ -2,11 +2,11 @@ package datasets;
 
 public class PropaneInstance implements Instance {
     private double[] frequencySpectrum;
-    private double tankWeight;
+    private double fuelLevel;
 
-    public PropaneInstance(double[] frequencySpectrum, double tankWeight) {
+    public PropaneInstance(double[] frequencySpectrum, double fuelLevel) {
         this.frequencySpectrum = frequencySpectrum;
-        this.tankWeight = tankWeight;
+        this.fuelLevel = fuelLevel;
     }
 
     @Override
@@ -16,6 +16,15 @@ public class PropaneInstance implements Instance {
 
     @Override
     public double getOutput() {
-        return tankWeight;
+        return fuelLevel;
+    }
+
+    @Override
+    public double getError(double y) {
+        if (y * fuelLevel <= 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

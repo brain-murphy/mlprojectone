@@ -38,14 +38,15 @@ public class PropaneDataReader {
         return data;
     }
 
-    public DataSet<PropaneInstance> getPropaneDataset() {
+    public DataSet<PropaneInstance> getPropaneDataSet() {
         PropaneInstance[] instances = new PropaneInstance[getFftCount()];
 
         int instanceIndex = 0;
 
         for (float weight : weights) {
             for (Map<Integer,Integer> fft : data.get(weight)) {
-                instances[instanceIndex] = new PropaneInstance(mapToDoubleArray(fft), weight);
+                double propaneLevel = weight < 21 ? -1 : 1; // low == -1, not low == 1
+                instances[instanceIndex] = new PropaneInstance(mapToDoubleArray(fft), propaneLevel);
                 instanceIndex += 1;
             }
         }

@@ -2,7 +2,10 @@ package algorithms;
 
 import datasets.*;
 
+import java.util.*;
+
 public interface Algorithm {
-    public void train(DataSet dataset, float targetTrainingError, int iterations);
+    public void setParams(Map<String, Object> params);
+    public void train(DataSet dataset);
     public Object evaluate(Object input);
 }

@@ -1,5 +1,8 @@
 package util;
 
+import datasets.*;
+import weka.core.*;
+
 import java.util.*;
 
 public class ProjectUtils {
@@ -12,13 +15,5 @@ public class ProjectUtils {
         }
 
         return primitiveArray;
-    }
-
-    public static double mean(double[] numbers) {
-        double sum = 0;
-        for (double number : numbers) {
-            sum += number;
-        }
-        return sum / numbers.length;
     }
 }

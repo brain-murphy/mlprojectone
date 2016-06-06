@@ -19,6 +19,20 @@ public class TestPropaneDataReader {
     }
 
     @Test
+    public void testPropaneDataErrorFunction() {
+        Instance fullPropaneInstance = new PropaneInstance(new double[]{}, 1);
+        Instance emptyPropaneInstance = new PropaneInstance(new double[]{}, -1);
+
+        assertTrue("full Instance should return err=1", fullPropaneInstance.getError(0) == 1);
+        assertTrue("full Instance should return err=1", fullPropaneInstance.getError(-1) == 1);
+        assertTrue("full Instance should return err=0", fullPropaneInstance.getError(1) == 0);
+
+        assertTrue("empty Instance should return err=1", emptyPropaneInstance.getError(1) == 1);
+        assertTrue("empty Instance should return err=1", emptyPropaneInstance.getError(.1) == 1);
+        assertTrue("empty Instance should return err=0", emptyPropaneInstance.getError(-0.9) == 0);
+    }
+
+    @Test
     public void testIterator() {
         //TODO
     }
