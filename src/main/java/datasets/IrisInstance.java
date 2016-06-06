@@ -32,6 +32,11 @@ public class IrisInstance implements Instance {
     }
 
     @Override
+    public double[] getPossibleOutputs() {
+        return new double[]{0, 1, 2};
+    }
+
+    @Override
     public double getError(double y) {
         long classification = Math.round(y);
 

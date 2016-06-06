@@ -24,7 +24,7 @@ public class TestNeuralNetAlgorithm {
         DataSet<PropaneInstance> propaneData = new PropaneDataReader().getPropaneDataSet();
 
         Map<String, Object> params = new HashMap<>();
-        params.put(NeuralNetAlgorithm.KEY_OUTPUT_NORMALIZER, new NormalizedField(NormalizationAction.Normalize, "weight", 1, -1, 1, 0));
+        params.put(NeuralNetAlgorithm.KEY_OUTPUT_NORMALIZER, new NormalizedField(NormalizationAction.Normalize, "weight", 1, 0, 1, 0));
         params.put(NeuralNetAlgorithm.KEY_MAX_ITERATIONS, 500);
         params.put(NeuralNetAlgorithm.KEY_TARGET_ERROR, .02f);
 
@@ -89,6 +89,6 @@ public class TestNeuralNetAlgorithm {
         neuralNetAlgorithm.setParams(params);
 
 //        System.out.println("\niris data:");
-        return CrossValidation.leaveOneOutCrossValidate(irisData, neuralNetAlgorithm);
+        return CrossValidation.crossValidate(irisData, 10, neuralNetAlgorithm);
     }
 }

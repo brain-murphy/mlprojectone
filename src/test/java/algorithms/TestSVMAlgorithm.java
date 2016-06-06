@@ -23,7 +23,7 @@ public class TestSvmAlgorithm {
 
         DataSet<PropaneInstance> propaneDataSet = new PropaneDataReader().getPropaneDataSet();
 
-        params.put(SvmAlgorithm.KEY_OUTPUT_NORMALIZER, new NormalizedField(NormalizationAction.Normalize, "isLow", 1,-1,1,-1));
+        params.put(SvmAlgorithm.KEY_OUTPUT_NORMALIZER, new NormalizedField(NormalizationAction.Normalize, "isLow", 1,0,1,-1));
         params.put(SvmAlgorithm.KEY_KERNEL_TYPE, KernelType.Poly);
         params.put(SvmAlgorithm.KEY_C, 1.0);
 

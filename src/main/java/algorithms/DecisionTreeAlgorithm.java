@@ -25,12 +25,13 @@ public class DecisionTreeAlgorithm implements Algorithm {
     public void train(DataSet dataset) {
         parser = new WekaParser(dataset);
 
-        tree = new REPTree();
+        tree = new J48();
 
         try {
             tree.buildClassifier(parser.getDataSetAsInstances());
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

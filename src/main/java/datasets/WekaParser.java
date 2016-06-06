@@ -20,7 +20,15 @@ public class WekaParser {
         for (int i = 0; i < firstInstance.getInput().length; i++) {
             attributes.addElement(new Attribute(Integer.toString(i)));
         }
-        Attribute outputAttribute = new Attribute(OUTPUT_ATTRIBUTE_NAME);
+
+        FastVector outputAttributeValues = new FastVector(firstInstance.getPossibleOutputs().length);
+
+        for (int i = 0; i < firstInstance.getPossibleOutputs().length; i++) {
+            outputAttributeValues.addElement(Double.toString(firstInstance.getPossibleOutputs()[i]));
+        }
+
+        Attribute outputAttribute = new Attribute(OUTPUT_ATTRIBUTE_NAME, outputAttributeValues);
+
         attributes.addElement(outputAttribute);
 
         wekaInstances = new Instances("dataset", attributes, dataSet.getInstances().length);

@@ -45,7 +45,7 @@ public class PropaneDataReader {
 
         for (float weight : weights) {
             for (Map<Integer,Integer> fft : data.get(weight)) {
-                double propaneLevel = weight < 21 ? -1 : 1; // low == -1, not low == 1
+                double propaneLevel = weight < 21 ? 0 : 1; // low == 0, not low == 1
                 instances[instanceIndex] = new PropaneInstance(mapToDoubleArray(fft), propaneLevel);
                 instanceIndex += 1;
             }

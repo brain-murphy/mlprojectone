@@ -38,9 +38,11 @@ public class KNearestNeighborsAlgorithm implements Algorithm {
         }
 
         try {
-            knn.buildClassifier(parser.getDataSetAsInstances());
+            Instances instances = parser.getDataSetAsInstances();
+            knn.buildClassifier(instances);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

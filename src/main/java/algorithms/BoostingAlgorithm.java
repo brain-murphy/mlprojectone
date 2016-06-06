@@ -41,6 +41,7 @@ public class BoostingAlgorithm implements Algorithm {
             booster.buildClassifier(parser.getDataSetAsInstances());
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
