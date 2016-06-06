@@ -21,15 +21,14 @@ public class PropaneInstance implements Instance {
 
     @Override
     public double[] getPossibleOutputs() {
-        return new double[] {-1, 1};
+        return new double[] {0, 1};
     }
 
     @Override
     public double getError(double y) {
-        if (y * fuelLevel <= 0) {
+        if (Math.abs(y - getOutput()) > .1) {
             return 1;
-        } else {
-            return 0;
         }
+        return 0;
     }
 }

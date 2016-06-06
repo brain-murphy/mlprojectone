@@ -32,7 +32,7 @@ public class KNearestNeighborsAlgorithm implements Algorithm {
         knn = new IBk();
 
         try {
-            knn.setOptions(options);
+            knn.setOptions(options.clone());
         } catch (Exception e) {
             e.printStackTrace();
         }

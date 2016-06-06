@@ -29,10 +29,10 @@ public class BoostingAlgorithm implements Algorithm {
     public void train(DataSet dataset) {
         parser = new WekaParser(dataset);
 
-        booster = new Bagging();
+        booster = new AdaBoostM1();
 
         try {
-            booster.setOptions(options);
+            booster.setOptions(options.clone());
         } catch (Exception e) {
             e.printStackTrace();
         }

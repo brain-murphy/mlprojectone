@@ -30,8 +30,8 @@ public class CrossValidation {
             errors.addValue(sumOfError / testingData.length);
         }
 
-        System.out.println("Average Error " + errors.getMean() + " over " + numFolds + " folds of size " + groups[0].size() + " with stdev " + errors.getStandardDeviation());
-        return new double[] {errors.getMean(), errors.getStandardDeviation()};
+//        System.out.println("Average Error " + errors.getMean() + " over " + numFolds + " folds of size " + groups[0].size() + " with stdev " + errors.getStandardDeviation());
+        return new double[] {errors.getMean(), errors.getStandardDeviation(), numFolds, groups[0].size()};
     }
 
     private static Instance[] combineAllListsExceptOne(List<Instance>[] lists, int listToLeaveOut) {
@@ -69,5 +69,4 @@ public class CrossValidation {
     public static double[] leaveOneOutCrossValidate(DataSet dataSet, Algorithm algorithm) {
         return crossValidate(dataSet, dataSet.getInstances().length, algorithm);
     }
-
 }
