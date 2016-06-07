@@ -26,7 +26,7 @@ public class TestDecisionTreeAlgorithm {
         decisionTreeAlgorithm.setParams(params);
 
         System.out.println("\npropane dataset (C4.5 tree):");
-        double[] results = CrossValidation.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
 
         System.out.println("Error:" + results[0] + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
@@ -42,7 +42,7 @@ public class TestDecisionTreeAlgorithm {
         decisionTreeAlgorithm.setParams(params);
 
         System.out.println("\npropane dataset (C4.5 with reduced error pruning):");
-        double[] results = CrossValidation.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
 
         System.out.println("Error:" + results[0] + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
@@ -62,7 +62,7 @@ public class TestDecisionTreeAlgorithm {
         decisionTreeAlgorithm.setParams(params);
 
         System.out.println("\npropane dataset (C4.5 with aggressive pruning):");
-        double[] results = CrossValidation.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
 
         System.out.println("Error:" + results[0] + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
@@ -80,7 +80,7 @@ public class TestDecisionTreeAlgorithm {
         decisionTreeAlgorithm.setParams(params);
 
         System.out.println("\npropane dataset (C4.5 with only binary splits):");
-        double[] results = CrossValidation.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(propaneDataSet, decisionTreeAlgorithm);
 
         System.out.println("Error:" + results[0] + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
@@ -97,7 +97,7 @@ public class TestDecisionTreeAlgorithm {
         decisionTreeAlgorithm.setParams(params);
 
         System.out.println("\niris datset (C4.5 tree):");
-        double[] results = CrossValidation.leaveOneOutCrossValidate(irisDataSet, decisionTreeAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(irisDataSet, decisionTreeAlgorithm);
 
         System.out.println("Error:" + results[0] + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
@@ -113,9 +113,38 @@ public class TestDecisionTreeAlgorithm {
         decisionTreeAlgorithm.setParams(params);
 
         System.out.println("\niris datset (C4.5 with reduced error pruning):");
-        double[] results = CrossValidation.leaveOneOutCrossValidate(irisDataSet, decisionTreeAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(irisDataSet, decisionTreeAlgorithm);
 
         System.out.println("Error:" + results[0] + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
+
+    @Test
+    public void learningCurveBestIrisClassifier() {
+        DataSet<IrisInstance> irisDataSet = new IrisDataReader().getIrisDataSet();
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put(DecisionTreeAlgorithm.KEY_REDUCED_ERROR_PRUNING, false);
+
+        decisionTreeAlgorithm.setParams(params);
+
+        System.out.println("\niris datset learning curve (C4.5 tree):");
+        ProjectUtils.printLearningCurve(irisDataSet, decisionTreeAlgorithm);
+    }
+
+    @Test
+    public void learningCurveBestPropaneClassifier() {
+        DataSet<PropaneInstance> propaneDataSet = new PropaneDataReader().getPropaneDataSet();
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put(DecisionTreeAlgorithm.KEY_REDUCED_ERROR_PRUNING, true);
+
+        decisionTreeAlgorithm.setParams(params);
+
+        System.out.println("\npropane datset learning curve (C4.5 tree with reduced error pruning):");
+        ProjectUtils.printLearningCurve(propaneDataSet, decisionTreeAlgorithm);
+    }
+
 
 }

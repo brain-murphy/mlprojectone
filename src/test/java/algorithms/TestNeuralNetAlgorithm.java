@@ -29,7 +29,7 @@ public class TestNeuralNetAlgorithm {
         double[] errors = new double[end - start];
 
         for (int layerLength = start; layerLength < end; layerLength++) {
-            errors[layerLength - start] = runIrisTestWithParams(0.00390625f, 50, layerLength)[0];
+            errors[layerLength - start] = runIrisTestWithParams(0.0078125f, 59, layerLength)[0];
 
             System.out.println("hidden layer length:" + layerLength + " error:" + errors[layerLength - start]);
         }
@@ -44,7 +44,7 @@ public class TestNeuralNetAlgorithm {
 
         for (int thresholdDivisor = start; thresholdDivisor < end; thresholdDivisor <<= 1) {
             float errorThreshold = 1.0f / thresholdDivisor;
-            double error = runIrisTestWithParams(errorThreshold, 50, 5)[0];
+            double error = runIrisTestWithParams(errorThreshold, 59, 16)[0];
 
             System.out.println("error threshold:" + errorThreshold + " error:" + error);
         }
@@ -58,7 +58,7 @@ public class TestNeuralNetAlgorithm {
         int end = 100;
 
         for (int maxIterations = start; maxIterations < end; maxIterations += 1) {
-            double error = runIrisTestWithParams(0.00390625f, maxIterations, 5)[0];
+            double error = runIrisTestWithParams(0.0078125f, maxIterations, 16)[0];
 
             System.out.println("max iterations:" + maxIterations + " error:" + error);
         }
@@ -74,7 +74,7 @@ public class TestNeuralNetAlgorithm {
         double[] errors = new double[end - start];
 
         for (int layerLength = start; layerLength < end; layerLength++) {
-            errors[layerLength - start] = runPropaneTestWithParams(0.01f, 300, layerLength)[0];
+            errors[layerLength - start] = runPropaneTestWithParams(0.01f, 500, layerLength)[0];
 
             System.out.println("hidden layer length:" + layerLength + " error:" + errors[layerLength - start]);
         }
@@ -134,16 +134,16 @@ public class TestNeuralNetAlgorithm {
 
         neuralNetAlgorithm.setParams(params);
 
-        double[] results = CrossValidation.leaveOneOutCrossValidate(dataSet, neuralNetAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(dataSet, neuralNetAlgorithm);
 
         System.out.println("Error:" + results[0] + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
 
     @Test
     public void testAllBestParamsIrisData() {
-        float bestErrorThreshold = 0.00390625f;
+        float bestErrorThreshold = 0.0078125f;
         int bestMaxIterations = 59;
-        int bestHiddenLayerSize = 16;
+        int bestHiddenLayerSize = 13;
 
         double[] results = runIrisTestWithParams(bestErrorThreshold, bestMaxIterations, bestHiddenLayerSize);
 
@@ -181,7 +181,7 @@ public class TestNeuralNetAlgorithm {
 
         neuralNetAlgorithm.setParams(params);
 
-        return CrossValidation.leaveOneOutCrossValidate(dataSet, neuralNetAlgorithm);
+        return ProjectUtils.leaveOneOutCrossValidate(dataSet, neuralNetAlgorithm);
     }
 
     private double[] runPropaneTestWithParams(float trainingError, int maxIterations, int layerLength) {
@@ -205,6 +205,32 @@ public class TestNeuralNetAlgorithm {
 
         neuralNetAlgorithm.setParams(params);
 
-        return CrossValidation.crossValidate(dataSet, 10, neuralNetAlgorithm);
+        return ProjectUtils.crossValidate(dataSet, 10, neuralNetAlgorithm);
+    }
+
+    @Test
+    public void learningCurveIrisIterations() {
+        System.out.println("\niris dataSet learning curve (NeuralNet with sigmoid activation and 13 node hidden layer):");
+        System.out.println("trainingIterations,trainingError,crossValidationError");
+
+        for (int iterations = 2; iterations < 100; iterations++) {
+
+            double[] results = runIrisTestWithParams(0.0078125f, iterations, 13);
+
+            System.out.println(Integer.toString(iterations) + "," + results[4] + "," + String.format("%.3f", results[0]));
+        }
+    }
+
+    @Test
+    public void learningCurvePropaneIterations() {
+        System.out.println("\npropane dataSet learning curve (NeuralNet with sigmoid activation and 12 node hidden layer):");
+        System.out.println("trainingIterations,trainingError,crossValidationError");
+
+        for (int iterations = 2; iterations < 100; iterations++) {
+
+            double[] results = runPropaneTestWithParams(0.01f, iterations, 12);
+
+            System.out.println(Integer.toString(iterations) + "," + results[4] + "," + String.format("%.3f", results[0]));
+        }
     }
 }

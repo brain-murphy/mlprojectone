@@ -10,6 +10,7 @@ import java.util.*;
 public class BoostingAlgorithm implements Algorithm {
 
     public static final String KEY_ALGORITHM_CLASS_NAME = "algorithm class param";
+    public static final String KEY_ITERATIONS = "iterations param";
 
     private WekaParser parser;
     private Classifier booster;
@@ -18,8 +19,14 @@ public class BoostingAlgorithm implements Algorithm {
     @Override
     public void setParams(Map<String, Object> params) {
         String algorithmClassName = (String) params.get(KEY_ALGORITHM_CLASS_NAME);
+        int iterations;
+        if (params.containsKey(KEY_ITERATIONS)) {
+            iterations = (int) params.get(KEY_ITERATIONS);
+        } else {
+            iterations = 10; // default
+        }
         try {
-            options = Utils.splitOptions("-W " + algorithmClassName);
+            options = Utils.splitOptions("-W " + algorithmClassName + " -I " + iterations);
         } catch (Exception e) {
             e.printStackTrace();
         }

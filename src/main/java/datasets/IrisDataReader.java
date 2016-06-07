@@ -7,7 +7,7 @@ import java.nio.charset.*;
 import java.util.*;
 
 public class IrisDataReader {
-    private static final String IRIS_FILE_PATH = "datasets/Iris.csv";
+    private static final String IRIS_FILE_PATH = "./Iris.csv";
 
     private IrisInstance[] data;
 
@@ -32,7 +32,9 @@ public class IrisDataReader {
     private CSVParser getParser() {
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File csvData = new File(classLoader.getResource(IRIS_FILE_PATH).getFile());
+//        InputStream stream=getClass().getClassLoader().getResourceAsStream(IRIS_FILE_PATH);
+//        FileInputStream stream = new FileInputStream(IRIS_FILE_PATH);
+        File csvData = new File(IRIS_FILE_PATH);
 
         try {
             return CSVParser.parse(csvData, Charset.defaultCharset(), CSVFormat.DEFAULT);

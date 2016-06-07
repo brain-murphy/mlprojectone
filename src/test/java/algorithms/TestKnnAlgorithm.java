@@ -26,7 +26,7 @@ public class TestKnnAlgorithm {
 
         knnAlgorithm.setParams(params);
 
-        double[] results = CrossValidation.leaveOneOutCrossValidate(propaneDataSet, knnAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(propaneDataSet, knnAlgorithm);
 
         System.out.println("Lowest Error:" + results[0] + " at k=" + k + " over " + ((int)results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
 
@@ -44,7 +44,7 @@ public class TestKnnAlgorithm {
 
         knnAlgorithm.setParams(params);
 
-        double[] results = CrossValidation.leaveOneOutCrossValidate(irisInstanceDataSet, knnAlgorithm);
+        double[] results = ProjectUtils.leaveOneOutCrossValidate(irisInstanceDataSet, knnAlgorithm);
 
         System.out.println("Lowest Error:" + results[0] + " at k=" + k + " over " + ((int) results[2]) + " folds of size " + ((int)results[3]) + " with stdev " + results[1]);
     }
@@ -67,7 +67,7 @@ public class TestKnnAlgorithm {
 
             knnAlgorithm.setParams(params);
 
-            errors[k - 1] = CrossValidation.leaveOneOutCrossValidate(propaneDataSet, knnAlgorithm)[0];
+            errors[k - 1] = ProjectUtils.leaveOneOutCrossValidate(propaneDataSet, knnAlgorithm)[0];
 
             System.out.println("k=" + k + " error:" + errors[k - 1]);
         }
@@ -92,9 +92,41 @@ public class TestKnnAlgorithm {
 
             knnAlgorithm.setParams(params);
 
-            errors[k - 1] = CrossValidation.leaveOneOutCrossValidate(irisInstanceDataSet, knnAlgorithm)[0];
+            errors[k - 1] = ProjectUtils.leaveOneOutCrossValidate(irisInstanceDataSet, knnAlgorithm)[0];
 
             System.out.println("k=" + k + " error:" + errors[k - 1]);
         }
+    }
+
+    @Test
+    public void learningCurvePropaneData() {
+        DataSet<PropaneInstance> propaneDataSet = new PropaneDataReader().getPropaneDataSet();
+
+        Map<String, Object> params = new HashMap<>();
+
+        int k = 1;
+
+        params.put(KNearestNeighborsAlgorithm.KEY_K, k);
+
+        knnAlgorithm.setParams(params);
+
+        System.out.println("propane dataSet learning curve (KNN with k=1):");
+        ProjectUtils.printLearningCurve(propaneDataSet, knnAlgorithm);
+    }
+
+    @Test
+    public void learningCurveIrisData() {
+        DataSet<IrisInstance> irisInstanceDataSet = new IrisDataReader().getIrisDataSet();
+
+        Map<String, Object> params = new HashMap<>();
+
+        int k = 7;
+
+        params.put(KNearestNeighborsAlgorithm.KEY_K, k);
+
+        knnAlgorithm.setParams(params);
+
+        System.out.println("iris dataSet learning curve (KNN with k=7):");
+        ProjectUtils.printLearningCurve(irisInstanceDataSet, knnAlgorithm);
     }
 }

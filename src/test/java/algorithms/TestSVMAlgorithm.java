@@ -71,7 +71,7 @@ public class TestSvmAlgorithm {
         double[] linearResults = testSvmOnPropaneData(KernelType.Linear, 1, .25);
         double[] polyResults = testSvmOnPropaneData(KernelType.Poly, 1, .25);
         double[] sigmoidResults = testSvmOnPropaneData(KernelType.Sigmoid, 1, .25);
-        double[] rbfResults = testSvmOnPropaneData(KernelType.RadialBasisFunction, 1, .25);
+        double[] rbfResults = testSvmOnPropaneData(KernelType.RadialBasisFunction, 1, 1.0000000000000003E-11);
 
         System.out.println("testing propane data with several kernels:");
         System.out.println("linear kernel err:" + linearResults[0]);
@@ -112,6 +112,58 @@ public class TestSvmAlgorithm {
         }
     }
 
+    @Test
+    public void learningCurveRBFIrisData() {
+        Map<String, Object> params = new HashMap<>();
+
+        params.put(SvmAlgorithm.KEY_OUTPUT_NORMALIZER, new NormalizedField(NormalizationAction.Normalize, "species", 2, 0, 2, 0));
+        params.put(SvmAlgorithm.KEY_KERNEL_TYPE, KernelType.RadialBasisFunction);
+        params.put(SvmAlgorithm.KEY_C, 0.28999999999999937);
+        params.put(SvmAlgorithm.KEY_GAMMA, 0.35999999999999943);
+
+        svmAlgorithm.setParams(params);
+
+        DataSet<IrisInstance> irisDataSet = new IrisDataReader().getIrisDataSet();
+
+        System.out.println("iris dataSet learning curve (SVM with RBF kernel C=0.29, gamma=0.36):");
+        ProjectUtils.printLearningCurve(irisDataSet, svmAlgorithm);
+    }
+
+    @Test
+    public void learningCurveLinearPropaneData() {
+        Map<String, Object> params = new HashMap<>();
+
+        DataSet<PropaneInstance> propaneDataSet = new PropaneDataReader().getPropaneDataSet();
+
+        params.put(SvmAlgorithm.KEY_OUTPUT_NORMALIZER, new NormalizedField(NormalizationAction.Normalize, "isLow", 1,0,1,-1));
+        params.put(SvmAlgorithm.KEY_KERNEL_TYPE, KernelType.Linear);
+        params.put(SvmAlgorithm.KEY_C, 1.0);
+
+        params.put(SvmAlgorithm.KEY_GAMMA, 1.0000000000000003E-11);
+
+        svmAlgorithm.setParams(params);
+
+        System.out.println("iris dataSet learning curve (Linear Kernel SVM):");
+        ProjectUtils.printLearningCurve(propaneDataSet, svmAlgorithm);
+    }
+
+    @Test
+    public void learningCurvePolyIrisData() {
+        Map<String, Object> params = new HashMap<>();
+
+        params.put(SvmAlgorithm.KEY_OUTPUT_NORMALIZER, new NormalizedField(NormalizationAction.Normalize, "species", 2, 0, 2, 0));
+        params.put(SvmAlgorithm.KEY_KERNEL_TYPE, KernelType.Poly);
+        params.put(SvmAlgorithm.KEY_C, 1.0);
+        params.put(SvmAlgorithm.KEY_GAMMA, .25);
+
+        svmAlgorithm.setParams(params);
+
+        DataSet<IrisInstance> irisDataSet = new IrisDataReader().getIrisDataSet();
+
+        System.out.println("iris dataSet learning curve (Polynomial Kernel):");
+        ProjectUtils.printLearningCurve(irisDataSet, svmAlgorithm);
+    }
+
     private double[] testSvmOnPropaneData(KernelType kernelType, double C, double gamma) {
         Map<String, Object> params = new HashMap<>();
 
@@ -125,7 +177,7 @@ public class TestSvmAlgorithm {
 
         svmAlgorithm.setParams(params);
 
-        return CrossValidation.crossValidate(propaneDataSet, 10, svmAlgorithm);
+        return ProjectUtils.crossValidate(propaneDataSet, 10, svmAlgorithm);
     }
 
     private double[] testSvmOnIrisData(KernelType kernelType, double C, double gamma) {
@@ -140,7 +192,7 @@ public class TestSvmAlgorithm {
 
         DataSet<IrisInstance> irisDataSet = new IrisDataReader().getIrisDataSet();
 
-        return CrossValidation.leaveOneOutCrossValidate(irisDataSet, svmAlgorithm);
+        return ProjectUtils.leaveOneOutCrossValidate(irisDataSet, svmAlgorithm);
     }
 
     private class OrderOfMagnitudeIterator implements Iterator<Double> {
